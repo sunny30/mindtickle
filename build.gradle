@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile group: 'org.projectlombok', name: 'lombok', version:'1.14.8'
+}
+
+dependencies {
+    compile group: 'com.yammer.dropwizard', name: 'dropwizard-core', version: '0.5.1'
+}
+
+apply plugin: 'application'
+
+mainClassName = 'com.example.helloworld.HelloWorldService'
+
+run {
+    args 'server', 'hello-world.yml'
+}
