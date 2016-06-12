@@ -11,8 +11,10 @@ import java.util.Map;
  */
 @Data
 public class ContentSeriesRelationShip {
-    private  static Map<String,ArrayList<String>> contentToSeriesMap;
-    private static ContentSeriesRelationShip contentSeriesRelationShip = null ;
+    private static Map<String, ArrayList<String>> contentToSeriesMap;
+    private static Map<String, ArrayList<String>> seriesToContentMap;
+    private static ContentSeriesRelationShip contentSeriesRelationShip = null;
+
     private ContentSeriesRelationShip() {
 
     }
@@ -20,8 +22,9 @@ public class ContentSeriesRelationShip {
     public static synchronized ContentSeriesRelationShip getSingleInstance() {
 
         if (contentSeriesRelationShip == null) {
-            contentToSeriesMap = new HashMap<String,ArrayList<String>>();
-            contentSeriesRelationShip = new ContentSeriesRelationShip() ;
+            contentToSeriesMap = new HashMap<String, ArrayList<String>>();
+            seriesToContentMap = new HashMap<String, ArrayList<String>>();
+            contentSeriesRelationShip = new ContentSeriesRelationShip();
 
         }
         return contentSeriesRelationShip;
@@ -29,14 +32,23 @@ public class ContentSeriesRelationShip {
 
     }
 
-    public void addRelationShip(String contentId,String seriesId){
-        if(contentToSeriesMap.get(contentId)==null){
-            ArrayList<String> seriesList = new ArrayList<String>() ;
+    public void addRelationShip(String contentId, String seriesId) {
+        if (contentToSeriesMap.get(contentId) == null) {
+            ArrayList<String> seriesList = new ArrayList<String>();
             seriesList.add(seriesId);
-            contentToSeriesMap.put(contentId,seriesList) ;
-        }else{
-            ArrayList<String> seriesList = contentToSeriesMap.get(contentId) ;
+            contentToSeriesMap.put(contentId, seriesList);
+        } else {
+            ArrayList<String> seriesList = contentToSeriesMap.get(contentId);
             seriesList.add(seriesId);
+        }
+        if (seriesToContentMap.containsKey(seriesId)) {
+            ArrayList<String> contentList = seriesToContentMap.get(seriesId);
+            contentList.add(contentId);
+        } else {
+            ArrayList<String> contentList = new ArrayList<String>();
+            contentList.add(contentId);
+            seriesToContentMap.put(seriesId, contentList);
+
         }
     }
 
