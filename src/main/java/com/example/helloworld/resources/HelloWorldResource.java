@@ -7,6 +7,7 @@ import com.example.helloworld.action.UserAction;
 import com.example.helloworld.core.Saying;
 import com.example.helloworld.model.ContentSeriesRelationShip;
 import com.example.helloworld.model.EntityMetadata;
+import com.example.helloworld.model.SeriesToGroupRelationShip;
 import com.example.helloworld.model.UserToGroupRelationShip;
 import com.google.common.base.Optional;
 import com.yammer.metrics.annotation.Timed;
@@ -129,6 +130,15 @@ public class HelloWorldResource {
         ContentSeriesRelationShip relationShip = ContentSeriesRelationShip.getSingleInstance() ;
         relationShip.addRelationShip(contentId,seriesId);
         return Response.created(URI.create(seriesId+" grant video "+contentId)).build() ;
+    }
+
+    @POST
+    @Timed
+    @Path("assign/series/{seriesId}/group/{groupId}")
+    public Response assignSeriesToGroup(@PathParam("seriesId") String seriesId,@PathParam("groupId") String groupId){
+        SeriesToGroupRelationShip seriesToGroupRelationShip = SeriesToGroupRelationShip.getSingleInstance() ;
+        seriesToGroupRelationShip.addRelationship(seriesId,groupId);
+        return Response.created(URI.create(seriesId+" assigned to group "+groupId)).build() ;
     }
 
 }
